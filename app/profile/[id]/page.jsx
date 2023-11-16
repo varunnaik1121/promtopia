@@ -1,17 +1,21 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
+
 import Profile from '@components/Profile';
-const MyProfile = () => {
+const UserProfile = () => {
   const { data: session } = useSession();
   const [posts, setPosts] = useState([]);
   const router = useRouter();
+
   //fething the profile by user id
+
+  console.log({ routerId: router.query.id });
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch(`/api/users/${session?.user.id}/posts`);
+      const res = await fetch(`/api/users/${router.query.id}/posts`);
       const data = await res.json();
       console.log({ data });
       setPosts(data);
@@ -40,7 +44,7 @@ const MyProfile = () => {
 
   return (
     <Profile
-      name={'My'}
+      name={posts[0]?.creator.username}
       desc="welcome to your personalized profile page"
       data={posts}
       handleEdit={handleEdit}
@@ -49,4 +53,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default UserProfile;
