@@ -24,6 +24,8 @@ const Feed = () => {
     setSearchText(e.target.value);
   };
 
+  if (posts) console.log({ posts });
+
   useEffect(() => {
     //filter the values based on search and set the values to original posts
     if (posts) {
@@ -32,9 +34,11 @@ const Feed = () => {
       }
       const filtered = posts.filter((post) => {
         return (
-          post.creator.username.includes(searchText) ||
-          post.tag.includes(searchText) ||
-          post.prompt.includes(searchText)
+          post.creator.username
+            .toLowerCase()
+            .includes(searchText.toLowerCase()) ||
+          post.tag.toLowerCase().includes(searchText.toLowerCase()) ||
+          post.prompt.toLowerCase().includes(searchText.toLowerCase())
         );
       });
       setFilteredPosts(filtered);
